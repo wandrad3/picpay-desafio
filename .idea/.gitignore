@@ -2,4 +2,9 @@
 /shelf/
 /workspace.xml
 
-data/payment.mv.db
+# Ignorar arquivos de banco de dados H2
+*.mv.db
+*.h2.db
+
+# Ignorar arquivos de log
+*.log
