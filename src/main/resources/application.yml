@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: desafio-picpay
+
+  profiles:
+    active: default
+
+  datasource:
+    username: sa
+    password: ""
+    platform: h2
+    url: jdbc:h2:file:./data/payment;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+
+  sql:
+    init:
+      continue-on-error: true
+      mode: always
+
+  devtools:
+    restart:
+      enabled: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+
+#apps:
+#  servicos:
+#    api-autorizacao:
+#      url: ${ENV_CONSULTA_AUTORIZACAO_URL}
+#
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        registerHealthIndicator: true
+#        slidingWindowSize: 10
+#        permittedNumberOfCallsInHalfOpenState: 5
+#        slidingWindowType: TIME_BASED
+#        minimumNumberOfCalls: 50
+#        waitDurationInOpenState: 10s
+#        failureRateThreshold: 10
+#        eventConsumerBufferSize: 50
+#    instances:
+#      pix-qrcode-database-DB001-circuit:
+#        baseConfig: default
+#
+#  retry:
+#    instances:
+#      authorizationApi:
+#        maxAttempts: 2
+#        waitDuration: 100
+#        retryExceptions:
+#          - feign.FeignException
