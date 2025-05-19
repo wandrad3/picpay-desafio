@@ -3,7 +3,7 @@ package com.br.wes.pay.infrastructure.api.impl;
 import com.br.wes.pay.application.service.ConsultarTransactionService;
 import com.br.wes.pay.application.service.CriarTransactionService;
 import com.br.wes.pay.infrastructure.api.TransactionAPI;
-import com.br.wes.pay.infrastructure.api.dto.TransactionDTO;
+import com.br.wes.pay.infrastructure.api.dto.TransactionRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +24,7 @@ public class TransactionController implements TransactionAPI {
 
 
     @Override
-    public ResponseEntity<TransactionDTO> createTransaction(TransactionDTO transactionDto) {
+    public ResponseEntity<TransactionRequestDto> createTransaction(TransactionRequestDto transactionDto) {
 
         var response = criarTransactionService.create(transactionDto.toDomain());
 
