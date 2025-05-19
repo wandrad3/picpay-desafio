@@ -30,18 +30,21 @@ Esta API permite que clientes realizem transferências entre carteiras digitais.
 flowchart LR
     A[Cliente] --> B[API]
     B --> C[Serviço de Transação]
-    C --> D[Serviço de Autorização]
-    C --> E[Salva Transação]
-    C --> F[Envia para Fila de Notificação]
-    F --> G[Consumidor de Notificação]
+    C --> D{Circuit Breaker}
+    D -- Serviço OK --> E[Serviço de Autorização]
+    D -- Fallback --> F[Mock de Autorização]
+    C --> G[Salva Transação]
+    C --> H[Envia para Fila de Notificação]
+    H --> I[Consumidor de Notificação]
 ```
 
-1. **Cliente** faz uma requisição para a **API**.
-2. A **API** aciona o **Serviço de Transação**, que valida a operação.
-3. O serviço consulta o **Serviço de Autorização** externo.
-4. Se autorizado, a transação é salva no banco de dados.
-5. Uma notificação é enviada para uma fila.
-6. O **Consumidor de Notificação** processa e envia a notificação ao usuário.
+**Resumo do fluxo:**
+
+1. **Cliente** faz requisição para a **API**.
+2. A **API** aciona o **Serviço de Transação**.
+3. O serviço utiliza um **Circuit Breaker** ao chamar o **Serviço de Autorização**.
+4. Se o serviço externo estiver indisponível, o Circuit Breaker retorna um **mock de autorização**.
+5. Se autorizado, a transação é salva e notificada normalmente.
 
 ---
 
