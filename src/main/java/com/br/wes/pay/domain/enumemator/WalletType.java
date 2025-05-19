@@ -6,7 +6,7 @@ public enum WalletType {
     private int value;
 
     private WalletType(int type){
-        this.value = value;
+        this.value = type;
     }
 
 

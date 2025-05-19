@@ -4,7 +4,11 @@ import com.br.wes.pay.application.contracts.ConsultarTrasactionGateway;
 import com.br.wes.pay.application.contracts.TransactionGateway;
 import com.br.wes.pay.application.service.exception.NotFoundTransactionException;
 import com.br.wes.pay.domain.Transaction;
+import com.br.wes.pay.domain.Wallet;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ConsultarTransactionService implements ConsultarTrasactionGateway {
@@ -23,7 +27,8 @@ public class ConsultarTransactionService implements ConsultarTrasactionGateway {
     }
 
     @Override
-    public Transaction listByPayee() {
-        return null;
+    public List<Transaction> listTransactions(String payer,String payee) {
+
+        return transactionGateway.listTransactions(payer, payee);
     }
 }

@@ -9,8 +9,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.checkerframework.checker.regex.qual.Regex;
+import org.springframework.cloud.client.loadbalancer.EmptyResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/v1/transaction")
 @Tag(name = "Transaction", description = "Transaction API")
@@ -62,7 +67,7 @@ public interface TransactionAPI {
 
     @GetMapping("/{id}")
     @Operation(
-            summary = "API para criar uma nova transação",
+            summary = "API para buscar uma nova transação por id",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
                             responseCode = "200",
@@ -88,5 +93,30 @@ public interface TransactionAPI {
             Integer id
     );
 
+    @GetMapping
+    @Operation(
+            summary = "API para listar todas as transações",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de transações encontrada com sucesso",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = TransactionRequestDto.class)
+                            )
+                    )
+            }
+    )
+    ResponseEntity<List<TransactionRequestDto>> listarTransacoes(
+            @RequestParam(name = "payer")
+            @NotNull
+            @Pattern(regexp = "^\\d+$", message = "O valor deve conter apenas números")
+            String payer,
+            @RequestParam(name = "payee")
+            @NotNull
+            @Pattern(regexp = "^\\d+$", message = "O valor deve conter apenas números")
+            String payee
+
+    );
 
 }

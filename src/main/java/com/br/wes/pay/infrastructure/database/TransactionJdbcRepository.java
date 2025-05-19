@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -45,12 +46,26 @@ public class TransactionJdbcRepository implements TransactionGateway {
 
     public Optional<Transaction> findById(Integer id) {
         String sql = "SELECT * FROM TRANSACTIONS WHERE id = ?";
-        return jdbcTemplate.query(sql, new Object[]{id}, rs -> {
+        return jdbcTemplate.query(con -> {
+            var ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            return ps;
+        }, rs -> {
             if (rs.next()) {
                 return Optional.of(mapRow(rs));
             }
             return Optional.empty();
         });
+    }
+
+    public List<Transaction> listTransactions(String payer, String payee) {
+        String sql = "SELECT * FROM TRANSACTIONS WHERE payer = ? AND payee = ?";
+        return jdbcTemplate.query(con -> {
+            var ps = con.prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(payer));
+            ps.setInt(2, Integer.parseInt(payee));
+            return ps;
+        }, (rs, rowNum) -> mapRow(rs));
     }
 
     private Transaction mapRow(ResultSet rs) throws SQLException {
