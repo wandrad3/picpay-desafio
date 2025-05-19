@@ -43,7 +43,7 @@ public class TransactionJdbcRepository implements TransactionGateway {
         );
     }
 
-    public Optional<Transaction> findById(Long id) {
+    public Optional<Transaction> findById(Integer id) {
         String sql = "SELECT * FROM TRANSACTIONS WHERE id = ?";
         return jdbcTemplate.query(sql, new Object[]{id}, rs -> {
             if (rs.next()) {

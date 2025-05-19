@@ -10,5 +10,5 @@ public interface TransactionGateway {
 
 
     Transaction save(Transaction transaction);
-    Optional<Transaction> findById(Long id);
+    Optional<Transaction> findById(Integer id);
 }

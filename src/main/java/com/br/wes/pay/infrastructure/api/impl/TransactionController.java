@@ -1,6 +1,7 @@
 package com.br.wes.pay.infrastructure.api.impl;
 
-import com.br.wes.pay.application.service.TransactionService;
+import com.br.wes.pay.application.service.ConsultarTransactionService;
+import com.br.wes.pay.application.service.CriarTransactionService;
 import com.br.wes.pay.infrastructure.api.TransactionAPI;
 import com.br.wes.pay.infrastructure.api.dto.TransactionDTO;
 import org.springframework.http.HttpStatus;
@@ -12,18 +13,30 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class TransactionController implements TransactionAPI {
 
-    private final TransactionService transactionService;
+    private final CriarTransactionService criarTransactionService;
+    private final ConsultarTransactionService consultarTrasactionService;
 
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
+    public TransactionController(CriarTransactionService transactionService,
+                                 ConsultarTransactionService consultarTrasactionService) {
+        this.criarTransactionService = transactionService;
+        this.consultarTrasactionService = consultarTrasactionService;
     }
 
 
     @Override
     public ResponseEntity<TransactionDTO> createTransaction(TransactionDTO transactionDto) {
 
-        var response = transactionService.create(transactionDto.toDomain());
+        var response = criarTransactionService.create(transactionDto.toDomain());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response.toDto());
+    }
+
+    @Override
+    public ResponseEntity<?> buscarPorId(Integer id) {
+
+        var response = consultarTrasactionService.findById(id);
+
+        return ResponseEntity.ok(response.toDto());
+
     }
 }

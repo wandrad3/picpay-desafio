@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class TransactionService {
+public class CriarTransactionService {
     private final TransactionGateway transactionGateway;
     private final WalletGateway walletRepository;
     private final NotificationService notificationService;
     private final AuthorizerGateway authorizedService;
     private final TrasactionValidator transactionValidator;
 
-    public TransactionService(TransactionGateway transactionGateway,
-                              WalletGateway walletRepository,
-                              AuthorizerGateway authorizedService,
-                              NotificationService notificationService,
-                              TrasactionValidator transactionValidator) {
+    public CriarTransactionService(TransactionGateway transactionGateway,
+                                   WalletGateway walletRepository,
+                                   AuthorizerGateway authorizedService,
+                                   NotificationService notificationService,
+                                   TrasactionValidator transactionValidator) {
         this.transactionGateway = transactionGateway;
         this.walletRepository = walletRepository;
         this.authorizedService = authorizedService;

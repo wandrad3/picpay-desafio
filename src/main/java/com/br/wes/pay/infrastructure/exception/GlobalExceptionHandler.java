@@ -2,6 +2,7 @@ package com.br.wes.pay.infrastructure.exception;
 
 
 import com.br.wes.pay.application.service.exception.InvalidTransactionException;
+import com.br.wes.pay.application.service.exception.NotFoundTransactionException;
 import com.br.wes.pay.application.service.exception.UnauthorizedTransactionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -30,5 +31,15 @@ public class GlobalExceptionHandler {
                 "The transaction is unauthorized. Ensure proper permissions are in place."
         );
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+    @ExceptionHandler(NotFoundTransactionException.class)
+    public ResponseEntity<ResponseError> handleNotFoundTransactionException(NotFoundTransactionException ex) {
+        ResponseError error = new ResponseError(
+                404,
+                ex.getMessage(),
+                "The transaction was not found. Please, check the ID and try again."
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
