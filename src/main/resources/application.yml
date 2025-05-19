@@ -2,6 +2,20 @@ spring:
   application:
     name: desafio-picpay
 
+  feign:
+    httpclient:
+      enabled: false
+      max-connections: ${FEIGN_HTTPCLIENT_MAX_CONNECTIONS:200}
+      max-connections-per-route: ${FEIGN_HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE:50}
+      connection-timer-repeat: ${FEIGN_HTTPCLIENT_CONNECTION_TIME_REQUEST:3000}
+      ok-http:
+        read-timeout: ${FEIGN_HTTPCLIENT_OKHTTP_DEFAULT_READ_TIMEOUT:5s}
+    client:
+      config:
+        default:
+          connectTimeout: ${FEIGN_HTTPCLIENT_CONFIG_DEFAULT_CONNECT_TIMEOUT:5000}
+          readTimeout: ${FEIGN_HTTPCLIENT_CONFIG_DEFAULT_READ_TIMEOUT:5000}
+
   profiles:
     active: default
 
@@ -38,31 +52,32 @@ spring:
             trusted:
               packages: "*"
 
-#apps:
-#  servicos:
-#    api-autorizacao:
-#      url: ${ENV_CONSULTA_AUTORIZACAO_URL}
-#
-#resilience4j:
-#  circuitbreaker:
-#    configs:
-#      default:
-#        registerHealthIndicator: true
-#        slidingWindowSize: 10
-#        permittedNumberOfCallsInHalfOpenState: 5
-#        slidingWindowType: TIME_BASED
-#        minimumNumberOfCalls: 50
-#        waitDurationInOpenState: 10s
-#        failureRateThreshold: 10
-#        eventConsumerBufferSize: 50
-#    instances:
-#      pix-qrcode-database-DB001-circuit:
-#        baseConfig: default
-#
-#  retry:
-#    instances:
-#      authorizationApi:
-#        maxAttempts: 2
-#        waitDuration: 100
-#        retryExceptions:
-#          - feign.FeignException
+apps:
+  servicos:
+    api-autorizacao:
+      url: ${ENV_CONSULTA_AUTORIZACAO_URL}
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 5
+        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 50
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 10
+        eventConsumerBufferSize: 50
+    instances:
+      authorization-circuit:
+        baseConfig: default
+
+  retry:
+    instances:
+      authorization-retry:
+        maxAttempts: 2
+        waitDuration: 100
+        retryExceptions:
+          - feign.FeignException

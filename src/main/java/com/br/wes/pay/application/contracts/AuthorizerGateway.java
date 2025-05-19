@@ -5,5 +5,5 @@ import com.br.wes.pay.domain.Transaction;
 
 public interface AuthorizerGateway {
 
-    public Authorization authorize(Transaction authorization);
+    public Authorization authorize(Transaction transaction);
 }
