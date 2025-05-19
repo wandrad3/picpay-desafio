@@ -46,7 +46,7 @@ public interface TransactionAPI {
                     ),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
                             responseCode = "412",
-                            description = "Valide os campos antes de enviar a requisição.",
+                            description = "Make sure the fields are valid before sending request.",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ValidationError.class)

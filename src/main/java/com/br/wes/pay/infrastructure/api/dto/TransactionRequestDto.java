@@ -12,21 +12,24 @@ public record TransactionRequestDto(
         Long id,
 
         @NotNull
-        Long payer,
+        @Pattern(regexp = "^\\d+$", message = "O valor deve conter apenas números")
+        String  payer,
 
         @NotNull
-        Long payee,
+        @Pattern(regexp = "^\\d+$", message = "O valor deve conter apenas números")
+        String payee,
 
         @NotNull
         BigDecimal amount,
+
         LocalDateTime createdAt) {
 
     public Transaction toDomain() {
 
         return new Transaction(
                 id,
-                payer,
-                payee,
+                Long.parseLong(payer),
+                Long.parseLong(payee),
                 amount,
                 LocalDateTime.now()
         );

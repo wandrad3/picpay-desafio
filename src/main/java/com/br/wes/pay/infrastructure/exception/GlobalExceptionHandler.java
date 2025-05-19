@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
         ValidationError err = new ValidationError();
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
-        err.setError("Erro de validação de campos");
-        err.setMessage("Valide os campos antes de enviar a requisição");
+        err.setError("Validation error");
+        err.setMessage("Make sure the fields are valid before sending request");
         err.setPath(request.getRequestURI());
 
         for (FieldError f : e.getBindingResult().getFieldErrors()) {

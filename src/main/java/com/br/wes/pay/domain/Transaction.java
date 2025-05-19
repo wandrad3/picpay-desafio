@@ -19,8 +19,8 @@ public record Transaction(
     public TransactionRequestDto toDto() {
         return new TransactionRequestDto(
                 id,
-                payer,
-                payee,
+                String.valueOf(payer),
+                String.valueOf(payee),
                 amount,
                 createdAt
         );
